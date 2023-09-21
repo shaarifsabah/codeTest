@@ -41,17 +41,22 @@ class UserRepository extends BaseRepository
         $this->logger->pushHandler(new FirePHPHandler());
     }
 
+    /**
+     * @param $id
+     * @param $request
+     * @return User|false
+     */
     public function createOrUpdate($id = null, $request)
     { 
-        $model = is_null($id) ? new User : User::findOrFail($id);
+        $model            = is_null($id) ? new User : User::findOrFail($id);
         $model->user_type = $request['role'];
-        $model->name = $request['name'];
+        $model->name      = $request['name'];
         $model->company_id = $request['company_id'] != '' ? $request['company_id'] : 0;
         $model->department_id = $request['department_id'] != '' ? $request['department_id'] : 0;
-        $model->email = $request['email'];
+        $model->email        = $request['email'];
         $model->dob_or_orgid = $request['dob_or_orgid'];
-        $model->phone = $request['phone'];
-        $model->mobile = $request['mobile'];
+        $model->phone        = $request['phone'];
+        $model->mobile       = $request['mobile'];
 
 
         if (!$id || $id && $request['password']) $model->password = bcrypt($request['password']);
@@ -211,14 +216,21 @@ class UserRepository extends BaseRepository
         return $model ? $model : false;
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function enable($id)
     {
         $user = User::findOrFail($id);
         $user->status = '1';
         $user->save();
-
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function disable($id)
     {
         $user = User::findOrFail($id);
@@ -227,9 +239,12 @@ class UserRepository extends BaseRepository
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getTranslators()
     {
-        return User::where('user_type', 2)->get();
+        return $this->model->where('user_type', 2)->get();
     }
     
 }

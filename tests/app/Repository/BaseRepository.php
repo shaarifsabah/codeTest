@@ -129,9 +129,8 @@ class BaseRepository
      */
     public function validator(array $data = [], $rules = null, array $messages = [], array $customAttributes = [])
     {
-        if (is_null($rules)) {
+        if (is_null($rules))
             $rules = $this->validationRules;
-        }
 
         return Validator::make($data, $rules, $messages, $customAttributes);
     }
